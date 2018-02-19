@@ -1,12 +1,7 @@
-# API Talks Repository
+# Talks
 
-Repository for development of talks
+## RESTful API's
 
-## Talks
-
-### RESTful API's
-
-- Author: Jodie Dunlop
-- Presentation: https://gitpitch.com/rexlabsio/api-talks/branch?p=restful-apis
-- Source: https://gitpitch.com/rexlabsio/api-talks/restful-apis/
+- Presentation: https://gitpitch.com/jodiedunlop/talks/master?p=restful-apis
+- Source: https://github.com/jodiedunlop/talks/tree/master/restful-apis
 - Date: 19 Feb 2018
