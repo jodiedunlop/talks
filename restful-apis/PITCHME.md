@@ -157,10 +157,24 @@ Uniform interface:
 
 ## HTTP VERBS
 
-Straight from the HTTP specification:
+---
 
 ## GET
 The GET method requests a representation of the specified resource. Requests using GET should only retrieve data and should have no other effect. 
+
+- Calling GET must have NO side effects
+- Responds with 200 status code
+- Returns an individual resource or collection
+- Is cacheable
+
+Note:
+No Side effects:
+The GET method is a safe method (or nullipotent), meaning that calling it produces no side-effects: retrieving or accessing a record does not change it.
+This means, you should never implement an action, or fire a job or task from a GET call.
+
+Is cacheable:
+A call to GET for a resource that has not been modified should not change it's
+Don't return any properties which could change 
 
 ---
 
@@ -171,6 +185,10 @@ The POST method requests that the server accept the entity enclosed in the reque
 
 ### PUT
 The PUT method requests that the enclosed entity be stored under the supplied URI. If the URI refers to an already existing resource, it is modified; if the URI does not point to an existing resource, then the server can create the resource with that URI.
+
+---
+
+### PUT Examples
 
 `PUT /resources/1234` - Replace the resource "1234"`
 `PUT /resources` - Replace the entire collection`
@@ -185,6 +203,11 @@ The HEAD method asks for a response identical to that of a GET request, but with
 ## PATCH
 The PATCH method applies partial modifications to a resource. Usually results in a 200 or 201 response.
 
+Note:
+From RFC 5789:
+The difference between the PUT and PATCH requests is reflected in the way the server processes the enclosed entity to modify the resource identified by the Request-URI. In a PUT request, the enclosed entity is considered to be a modified version of the resource stored on the origin server, and the client is requesting that the stored version be replaced. With PATCH, however, the enclosed entity contains a set of instructions describing how a resource currently residing on the origin server should be modified to produce a new version. The PATCH method affects the resource identified by the Request-URI, and it also MAY have side effects on other resources; i.e., new resources may be created, or existing ones modified, by the application of a PATCH.
+
+
 ---
 
 ## DELETE
@@ -194,24 +217,16 @@ The DELETE method deletes the specified resource. Usually an empty content body 
 
 
 ## OPTIONS
-The OPTIONS method returns the HTTP methods that the server supports for the specified URL. This can be used to check the functionality of a web server by requesting '*' instead of a specific resource.
+The OPTIONS method returns the HTTP methods that the server supports for the specified URL. This can be used to check the functionality of a web server by requesting \* instead of a specific resource.
 
 ---
 
-
-### Talk notes:
-
-From RFC 5789:
-The difference between the PUT and PATCH requests is reflected in the way the server processes the enclosed entity to modify the resource identified by the Request-URI. In a PUT request, the enclosed entity is considered to be a modified version of the resource stored on the origin server, and the client is requesting that the stored version be replaced. With PATCH, however, the enclosed entity contains a set of instructions describing how a resource currently residing on the origin server should be modified to produce a new version. The PATCH method affects the resource identified by the Request-URI, and it also MAY have side effects on other resources; i.e., new resources may be created, or existing ones modified, by the application of a PATCH.
-
-
----
-
-# HTTP Status codes
+## HTTP Status codes
 
 A minimal approach to HTTP status codes:
 
-* 200 - Return this when it was successful
+* 200 - Return this when successful
+* Return any other code on failure
 
 ---
 
@@ -271,37 +286,26 @@ The server is currently unavailable (because it is overloaded or down for mainte
 ## 504 - GATEWAY TIMEOUT
 Did not receive a timely response from the upstream server. You might implement this status code if your API depends on a third-party, and a timeout occurs while trying to perform the operation on the remote server.
 
-### Speaker Notes:
+Note:
 
 ^ If you are implementing more status codes than this and you don't have a great reason to, then you may be complicating your API more than is needed.
 
-
-
-
 The exact error should be explained in the error payload. 
 
-
-
-
+---
 
 # Building a good RESTful API
 
 
 - Start with the documentation: Swagger/OpenAPI, API Blueprint, RAML etc.
-	
 - Take a data-orientated approach to building your API
-
 - Use JSON as your transport format for Requests and Responses
-
 - Keep your JSON as simple as possible
-
 - Use permanent, opaque, ids
-
 - Provide links
-
 - Use nouns not verbs for resource locations
 
--
+---
 
 ## Individual Book Resource 
 
@@ -322,6 +326,8 @@ The exact error should be explained in the error payload.
 	}
 }
 ```
+
+---
 
 ## Collection of Book Resources
 
@@ -354,9 +360,9 @@ The exact error should be explained in the error payload.
 	    }
 	}
 }
-
 ```
 
+---
 
 ### Talk notes
 
@@ -382,8 +388,9 @@ Takes a data-orientated approach Data orientated approach: Model your API on rep
 
 Just use JSON: JSON is lightweight, has great support amongst programming languages, is much less verbose than XML, it's very readable, and maps well to your models and entities.  It comes in many flavours such as JSON-API and there are various extensions to make it more
 
+---
 
-### What to document
+## What to document
 
 - Authentication
 - Request and Response format
@@ -392,15 +399,13 @@ Just use JSON: JSON is lightweight, has great support amongst programming langua
 - HTTP Status Codes
 - Resource endpoints
 
-
-
-
+---
 
 ## Mapping Resources to Models
 
 - Models don't necessarily map 1:1 with a resource
-- 
 
+---
 
 To envelope or not to envelope
 
@@ -416,14 +421,18 @@ To envelope or not to envelope
 
 vs
 
+```json
 {
 	"id": 1234, 
 	"name": "Pride and Prejudice"
 }
+```
 
 - Links
 - jsonp?
 - 
+
+---
 
 #### JSONP
 
@@ -446,6 +455,7 @@ curl https://api.github.com?callback=foo
 })
 ```
 
+---
 
 ## Caching
 
@@ -453,6 +463,7 @@ curl https://api.github.com?callback=foo
 - If-None-Match, If-Modified-Since, Last-Modified
 - CORS
 
+---
 
 ### Etag
 
@@ -466,30 +477,13 @@ When generating a response,
 
 Etags don't combine well with embedded resources.
 
+---
+
 ### Last-Modfied
 
 Last-Modified: This basically works like to ETag, except that it uses timestamps. The response header Last-Modified contains a timestamp in RFC 1123 format which is validated against If-Modified-Since. Note that the HTTP spec has had 3 different acceptable date formats and the server should be prepared to accept any one of them.
 
-
-PHP Api Client
-Resource extends ArrayObject
-
-- Headers
-- getHttpStatusCode()
-- getPayload()
-- getContentType()
-- isJson()
-- isOk()
-- isError()
-- isCreated()
-- isModified()
-- isClientError()
-- isServerError()
-- data()  -> ArrayObject
-- __call() -> delegate to ArrayObject
-- __get	-> delegate to ArrayObject
-- __set -> delegate to ArrayObject
-
+---
 
 ## What should you standardise?
 
@@ -514,15 +508,9 @@ Everything!
 - Links
 - User-Agent
 
-
-
-
-Speaker notes;
-
+Note:
 How are links defined, are they implemented as headers, or encoded in the payload
 See: https://tools.ietf.org/html/rfc5988#page-6
-
-### Speaker notes
 
 snake_case or camelCase;
 
@@ -533,6 +521,8 @@ whitespace:
 It's easier to debug, and look at when your responses are whitespace formatted.
 With GZIP compression there will only be a few bytes difference.
 
+
+---
 
 ## Security concerns
 
@@ -546,12 +536,15 @@ With GZIP compression there will only be a few bytes difference.
 - Don't leak dumps/stack traces. Return an error message (use an environment flag)
 - Errors
 
+---
+
 ### SSL
 
 - Simplifies authentication credentials (can be passed as basic auth)
 
 By always using SSL, the authentication credentials can be simplified to a randomly generated access token that is delivered in the user name field of HTTP Basic Auth. The great thing about this is that it's completely browser explorable - the browser will just popup a prompt asking for credentials if it receives a 401 Unauthorized status code from the server.
 
+---
 
 ## Authentication
 
@@ -561,6 +554,7 @@ By always using SSL, the authentication credentials can be simplified to a rando
 
 OAuth 2 should be used to provide secure token transfer to a third party. OAuth 2 uses Bearer tokens & also depends on SSL for its underlying transport encryption.
 
+---
 
 ## Why transform
 
@@ -571,6 +565,11 @@ OAuth 2 should be used to provide secure token transfer to a third party. OAuth 
 - More control: eg. sparse field sets
 - Easier to merge related entities
 
+---
+
+## Example transform
+
+---
 
 ## Searching
 
@@ -579,6 +578,7 @@ OAuth 2 should be used to provide secure token transfer to a third party. OAuth 
 A search is a sub-resource of a collection. As such, its results will have a different format than the resources and the collection itself. This allows us to add suggestions, corrections and information related to the search. 
 Parameters are provided the same way as for a filter, through the query-string, but they are not necessarily exact values, and their syntax permits approximate matching.
 
+---
 
 ## Link based
 
@@ -592,39 +592,14 @@ https://tools.ietf.org/html/rfc5988#page-6
 Link: <https://api.github.com/user/repos?page=3&per_page=100>; rel="next", <https://
 api.github.com/user/repos?page=50&per_page=100>; rel="last"
 
+---
+
 ## Pagination
 
 The right way to include pagination details today is using the Link header introduced by RFC 5988.
 
-POST
+---
 
-PUT being indempotent
-
-- Replace (or create) a resource
-- 200 (OK) or 201 (Resource created)
-
-
-PATCH
-POST
-GET
-DELETE
-
-## GET
-
-- Calling GET must have NO side effects
-- Responds with 200 status code
-- Returns an individual resource or collection
-- Is cacheable
-
-### Speakers 
-
-No Side effects:
-The GET method is a safe method (or nullipotent), meaning that calling it produces no side-effects: retrieving or accessing a record does not change it.
-This means, you should never implement an action, or fire a job or task from a GET call.
-
-Is cacheable:
-A call to GET for a resource that has not been modified should not change it's
-Don't return any properties which could change 
 
 ### General
 
@@ -637,12 +612,11 @@ Don't return any properties which could change
 - JSON only responses
 
 
-#### Speaker notes
+Note:
 
 JSON only responses:
 
 XML is verbose, larger payloads, not as similar to how data is modelled on the server side.
-
 
 ### Rate limiting
 
@@ -650,12 +624,19 @@ To prevent abuse, it is standard practice to add some sort of rate limiting to a
 
 However, it can be very useful to notify the consumer of their limits before they actually hit it. This is an area that currently lacks standards but has a number of popular conventions using HTTP response headers.
 
+---
+
+## Rate Limiting
+
 At a minimum, include the following headers (using Twitter's naming conventions as headers typically don't have mid-word capitalization):
 
 X-Rate-Limit-Limit - The number of allowed requests in the current period
 X-Rate-Limit-Remaining - The number of remaining requests in the current period
 X-Rate-Limit-Reset - The number of seconds left in the current period
 
+---
+
+## Rate Limiting
 
 ```bash
 curl -i https://api.github.com/users/octocat
@@ -667,10 +648,6 @@ X-RateLimit-Remaining: 56
 X-RateLimit-Reset: 1372700873
 ```
 
-403 Forbidden
-
-
-
 ### HATEOAS
 
 Hypermedia As The Engine Of Application State
@@ -680,21 +657,27 @@ Driven by driven by hypermedia, rather than out-of-band information.
 TL;DR - Add links to your responses so the client knows where to go next.
 
 
-### Library example
+## Library example
 
-GET    /books
-POST   /books
-GET    /books/{book}
-PUT    /books/{book}
-PATCH  /books/{book}
-DELETE /books/{book}
-GET    /authors
-POST   /authors
-...
-GET    /books/{book}/authors
-GET    /users/{user}
-GET    /users/{user}/favoriteBooks
+---
 
+### REST style
+
+- GET    /books
+- POST   /books
+- GET    /books/{book}
+- PUT    /books/{book}
+- PATCH  /books/{book}
+- DELETE /books/{book}
+- GET    /authors
+- POST   /authors
+- GET    /books/{book}/authors
+- GET    /users/{user}
+- GET    /users/{user}/favourites
+
+---
+
+### RPC Style
 
 /getBooks
 /createNewBook
@@ -706,6 +689,7 @@ GET    /users/{user}/favoriteBooks
 /changeBookClubMeetingLocation
 /removeBookClubMember
 
+---
 
 ## Other things to consider
 
@@ -719,33 +703,37 @@ GET    /users/{user}/favoriteBooks
 - How you publish documentation
 - Quickstart guide
 - Client SDK's
-- 
+
+---
 
 ## Good apis
 - github?
 - facebook?
 - twilio?
 
+---
 
 ## Bad apis
 - Facebook
 - Twitter?
 
 
-References:
+---
 
-http://transmission.vehikl.com/theres-a-model-hiding-in-your-rest-api/
-https://savvyapps.com/blog/how-to-build-restful-api-mobile-app
-http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#ssl
-https://developers.facebook.com/docs/graph-api/using-graph-api/#paging
-https://developer.github.com/v3/
-https://stripe.com/docs/api
-http://blog.restcase.com/5-basic-rest-api-design-guidelines/
-https://en.m.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods
-https://swaggerhub.com/blog/api-documentation/best-practices-in-api-documentation/
-http://dev.bitly.com/authentication.html
-https://sookocheff.com/post/api/on-choosing-a-hypermedia-format/
-https://pages.apigee.com/rs/351-WXY-166/images/Web-design-the-missing-link-ebook-2016-11.pdf
-https://swaggerhub.com/blog/api-documentation/best-practices-in-api-documentation/
-https://classroom.udacity.com/courses/ud388/lessons/4592928861/concepts/52457425850923
-https://slack.engineering/evolving-api-pagination-at-slack-1c1f644f8e12
+## References:
+
+- http://transmission.vehikl.com/theres-a-model-hiding-in-your-rest-api/
+- https://savvyapps.com/blog/how-to-build-restful-api-mobile-app
+- http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#ssl
+- https://developers.facebook.com/docs/graph-api/using-graph-api/#paging
+- https://developer.github.com/v3/
+- https://stripe.com/docs/api
+- http://blog.restcase.com/5-basic-rest-api-design-guidelines/
+- https://en.m.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods
+- https://swaggerhub.com/blog/api-documentation/best-practices-in-api-documentation/
+- http://dev.bitly.com/authentication.html
+- https://sookocheff.com/post/api/on-choosing-a-hypermedia-format/
+- https://pages.apigee.com/rs/351-WXY-166/images/Web-design-the-missing-link-ebook-2016-11.pdf
+- https://swaggerhub.com/blog/api-documentation/best-practices-in-api-documentation/
+- https://classroom.udacity.com/courses/ud388/lessons/4592928861/concepts/52457425850923
+- https://slack.engineering/evolving-api-pagination-at-slack-1c1f644f8e12
