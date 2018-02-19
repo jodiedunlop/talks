@@ -111,7 +111,7 @@ Many RESTful API's adhere to some of these constraints.
 
 ---
 
-# Your own standard
+## Your own standard
 
 he _rest_ is up to you:
 
@@ -254,7 +254,7 @@ A minimal approach to HTTP status codes:
 
 ---
 
-# Better HTTP Status codes
+## Better HTTP Status codes
 
 * 200 - OK: everything "good"
 * 400 - BAD REQUEST: something bad with the client request
@@ -263,7 +263,7 @@ A minimal approach to HTTP status codes:
 
 ---
 
-# Better HTTP Status codes
+## Better HTTP Status codes
 
 ## 200 – OK 
 The request was successful (eg. when fetching a resource)
@@ -318,7 +318,7 @@ The exact error should be explained in the error payload.
 
 ---
 
-# Building a good RESTful API
+## Building a good RESTful API
 
 
 - Start with the documentation: Swagger/OpenAPI, API Blueprint, RAML etc.
