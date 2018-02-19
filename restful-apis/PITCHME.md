@@ -212,10 +212,19 @@ The PUT method requests that the enclosed entity be stored under the supplied UR
 
 ---
 
-### PUT Examples
+### Examples
 
-`PUT /resources/1234` - Replace the resource "1234"`
-`PUT /resources` - Replace the entire collection`
+Replace the resource "1234":
+
+```http
+PUT /resources/1234
+```
+
+Replace the entire collection:
+
+```http
+PUT /resources
+```
 
 ---
 
