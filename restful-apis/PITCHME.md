@@ -111,55 +111,79 @@ Many RESTful API's adhere to some of these constraints.
 
 ---
 
-## Your own standard
+# Your own standard
 
-The _rest_ is up to you:
+he _rest_ is up to you:
 
-- How you should format your data.
-- How you represent your entities.
-- How you structure your URI's.
-- What information you should include within a resource.
-- Which cache headers you use.
-- How meta information is represented.
-- How fields are formatted.
+ How you should format your data.
+ How you represent your entities.
+ How you structure your URI's.
+ What information you should include within a resource.
+ Which cache headers you use.
+ How meta information is represented.
+ How fields are formatted.
 
-Note:
-What does it mean to be restful, or implement REST architecure.
+ote:
+hat does it mean to be restful, or implement REST architecure.
 
-It's a standard suggested by Roy Fielding in year 2000.
+t's a standard suggested by Roy Fielding in year 2000.
 
-It dictates that the HTTP protocol verbs are used for requests, plus the following architectural constraints
+t dictates that the HTTP protocol verbs are used for requests, plus the following architectural constraints
 
 
-The REST definition requires four constraints:
+he REST definition requires four constraints:
 
-Statelessness:
+tatelessness:
 
-- All of the information necessary to service the request is contained within the client request and the server response. It does not allow any stored server state to be maintained between requests.  This makes scaling much simpler.
+ All of the information necessary to service the request is contained within the client request and the server response. It does not allow any stored server state to be maintained between requests.  This makes scaling much simpler.
 
-Cacheability:
+acheability:
 
-- Responses should define themselves as cacheable or not cacheable to improve scalability and performance
+ Responses should define themselves as cacheable or not cacheable to improve scalability and performance
 
-Layered system:
+ayered system:
 
-- Intermediate services can be used to help handle the request
-- Load balancers, proxy services, security layers
+ Intermediate services can be used to help handle the request
+ Load balancers, proxy services, security layers
 
-Uniform interface:
+niform interface:
 
-- Resources can be identified eg. by a URI
-- The data within a resource representation is enough for the client to manipulate the data
-- The resource can provide a self-description such as sending `Content-Type` headers so the client knows how to parse the format
-- Clients can discover related actions or resources by embedding links HATEOAS style
+ Resources can be identified eg. by a URI
+ The data within a resource representation is enough for the client to manipulate the data
+ The resource can provide a self-description such as sending `Content-Type` headers so the client knows how to parse the format
+ Clients can discover related actions or resources by embedding links HATEOAS style
 
 ---
+
+### General
+
+- Build your API for your consumers; frontend devs, customers, mobile apps
+- Server should do the heavy listing
+- Use SSL always - simplifies authentication and ensures data is not eavesdropped.
+    - Don't allow non-SSL, don't redirect non-ssl
+- Version your API major (eg. URL) and minor (eg. HEADERS)
+- JSON only responses
+
+Note:
+
+JSON only responses:
+
+XML is verbose, larger payloads, not as similar to how data is modelled on the server side.
+
+### Nice things
+
+- Sparse field sets
+- Links
+- Rate limiting
+
+---
+
 
 ## HTTP VERBS
 
 ---
 
-## GET
+### GET
 The GET method requests a representation of the specified resource. Requests using GET should only retrieve data and should have no other effect. 
 
 - Calling GET must have NO side effects
@@ -428,17 +452,15 @@ vs
 }
 ```
 
-- Links
-- jsonp?
-- 
-
 ---
 
 #### JSONP
 
+```bash
 curl https://api.github.com?callback=foo
-
 ```
+
+```jsonp
 /**/foo({
   "meta": {
     "status": 200,
@@ -491,9 +513,18 @@ Everything!
 
 - Documentation
 - Authentication
+- Types and Ids
+- How resources are transformed
+- Errors
+- Pagination
+
+
+--- 
+
+### Standardising types
+
+- Ids
 - Constants
-- How are id's serialized
-- What is the format of an id
 - Dates
 - Booleans
 - Versioning
@@ -546,7 +577,7 @@ By always using SSL, the authentication credentials can be simplified to a rando
 
 ---
 
-## Authentication
+### Authentication
 
 - OAuth2
 - Users can use the OAUTH2 web flow
@@ -556,7 +587,7 @@ OAuth 2 should be used to provide secure token transfer to a third party. OAuth 
 
 ---
 
-## Why transform
+### Why transform
 
 - Models don't always map 1:1 with a resource
 - Leak information
@@ -569,9 +600,11 @@ OAuth 2 should be used to provide secure token transfer to a third party. OAuth 
 
 ## Example transform
 
+TODO
+
 ---
 
-## Searching
+### Searching
 
 - Sub-resource of a collection
 - Can have a different format to collection/resource
@@ -580,43 +613,24 @@ Parameters are provided the same way as for a filter, through the query-string, 
 
 ---
 
-## Link based
-
-Headers
-
-
-See https://developer.github.com/v3/#pagination
 
 https://tools.ietf.org/html/rfc5988#page-6
+
+
+---
+
+### Pagination
+
+The right way to include pagination details today is using the Link header introduced by RFC 5988.
+
+See https://developer.github.com/v3/#pagination
 
 Link: <https://api.github.com/user/repos?page=3&per_page=100>; rel="next", <https://
 api.github.com/user/repos?page=50&per_page=100>; rel="last"
 
 ---
 
-## Pagination
 
-The right way to include pagination details today is using the Link header introduced by RFC 5988.
-
----
-
-
-### General
-
-- Build your API for your consumers; frontend devs, customers, mobile apps
-- Server should do the heavy listing
-- Use SSL always - simplifies authentication and 
-- Don't allow non-SSL, don't redirect non-ssl
-- Version your API major (eg. URL) and minor (eg. HEADERS)
-- Sparse field sets
-- JSON only responses
-
-
-Note:
-
-JSON only responses:
-
-XML is verbose, larger payloads, not as similar to how data is modelled on the server side.
 
 ### Rate limiting
 
