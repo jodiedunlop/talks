@@ -1,9 +1,6 @@
-
-
-REST
+# RESTful API's
 
 ## In this talk
-
 
 - Meaning of REST
 - documenting your api
@@ -41,6 +38,10 @@ REST
 
 The term RESTful has emerged for web APIs that use the native concepts and techniques of the HTTP protocol, and blend in other concepts.  HTTP and REST are precisely defined, but the term RESTful is less opinionated.
 
+---
+
+## Popular
+
 REST has gained popularity because:
 
 - REST is pervasive; easy to implement in any language, many tooling
@@ -68,9 +69,7 @@ REST has gained popularity because:
 - Developers can set their own standards
 - Open to interpretation
 
----
-
-## Speaker Notes:
+Note:
 
 ^ Uniform interface: Your models/entities don't always map nicely to a RESTful interface (more in this later)
 
@@ -84,7 +83,7 @@ REST has gained popularity because:
 
 ---
 
-# RESTful architecture
+## RESTful architecture
 
 An API that implements RESTFul principals does the following:
 
@@ -95,6 +94,7 @@ An API that implements RESTFul principals does the following:
 
 ---
 
+## REST standard
 
 The REST standard stipulates the following architectural constraints:
 
@@ -109,6 +109,10 @@ The REST standard stipulates the following architectural constraints:
 
 Many RESTful API's adhere to some of these constraints.
 
+---
+
+## Your own standard
+
 The _rest_ is up to you:
 
 - How you should format your data.
@@ -119,9 +123,7 @@ The _rest_ is up to you:
 - How meta information is represented.
 - How fields are formatted.
 
-
-### Speaker notes
-
+Note:
 What does it mean to be restful, or implement REST architecure.
 
 It's a standard suggested by Roy Fielding in year 2000.
@@ -151,18 +153,21 @@ Uniform interface:
 - The resource can provide a self-description such as sending `Content-Type` headers so the client knows how to parse the format
 - Clients can discover related actions or resources by embedding links HATEOAS style
 
-# HTTP VERBS
+---
+
+## HTTP VERBS
 
 Straight from the HTTP specification:
 
 ## GET
 The GET method requests a representation of the specified resource. Requests using GET should only retrieve data and should have no other effect. 
 
-## HEAD
-The HEAD method asks for a response identical to that of a GET request, but without the response body. This is useful for retrieving meta-information written in response headers, without having to transport the entire content.
+---
 
 ### POST
 The POST method requests that the server accept the entity enclosed in the request as a new subordinate of the web resource identified by the URI. 
+
+---
 
 ### PUT
 The PUT method requests that the enclosed entity be stored under the supplied URI. If the URI refers to an already existing resource, it is modified; if the URI does not point to an existing resource, then the server can create the resource with that URI.
@@ -170,17 +175,28 @@ The PUT method requests that the enclosed entity be stored under the supplied UR
 `PUT /resources/1234` - Replace the resource "1234"`
 `PUT /resources` - Replace the entire collection`
 
+---
+
+## HEAD
+The HEAD method asks for a response identical to that of a GET request, but without the response body. This is useful for retrieving meta-information written in response headers, without having to transport the entire content.
+
+---
 
 ## PATCH
 The PATCH method applies partial modifications to a resource. Usually results in a 200 or 201 response.
 
+---
 
 ## DELETE
 The DELETE method deletes the specified resource. Usually an empty content body is returned with a 204 HTTP STATUS.
 
+---
+
 
 ## OPTIONS
 The OPTIONS method returns the HTTP methods that the server supports for the specified URL. This can be used to check the functionality of a web server by requesting '*' instead of a specific resource.
+
+---
 
 
 ### Talk notes:
@@ -189,7 +205,7 @@ From RFC 5789:
 The difference between the PUT and PATCH requests is reflected in the way the server processes the enclosed entity to modify the resource identified by the Request-URI. In a PUT request, the enclosed entity is considered to be a modified version of the resource stored on the origin server, and the client is requesting that the stored version be replaced. With PATCH, however, the enclosed entity contains a set of instructions describing how a resource currently residing on the origin server should be modified to produce a new version. The PATCH method affects the resource identified by the Request-URI, and it also MAY have side effects on other resources; i.e., new resources may be created, or existing ones modified, by the application of a PATCH.
 
 
-
+---
 
 # HTTP Status codes
 
@@ -197,7 +213,7 @@ A minimal approach to HTTP status codes:
 
 * 200 - Return this when it was successful
 
-
+---
 
 # Better HTTP Status codes
 
@@ -206,6 +222,7 @@ A minimal approach to HTTP status codes:
 * 404 - NOT FOUND: missing resource
 * 500 - INTERNAL SERVER ERROR: something bad on the server
 
+---
 
 # Better HTTP Status codes
 
