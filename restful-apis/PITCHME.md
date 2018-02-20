@@ -670,6 +670,10 @@ market resource.
 ^ We can now extend our API to include the ability to place buy and sell orders for a market
 and also get market information
 
+^ You're probably wondering if orders could just be it's own resource. It could be, 
+but since an order is based around a market, it makes sense to keep it nested for now.
+Remember - you can always add additional endpoints later.
+
 ## GET /v1/coins
 
 
