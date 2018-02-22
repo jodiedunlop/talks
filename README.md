@@ -1,7 +1,18 @@
 # Talks
 
+## API Versioning
+
+- PDF: https://jodiedunlop.github.io/talks/api-versioning/pdf/api-versioning.pdf
+- Source: https://github.com/jodiedunlop/talks/tree/master/api-versioning
+- Date: 21 Feb 2018
+
+## Unicode and U
+
+- PDF: https://jodiedunlop.github.io/talks/unicode-and-u/pdf/unicode-and-u.pdf
+- Source: https://github.com/jodiedunlop/talks/tree/master/unicode-and-u
+- Date: 
+
 ## RESTful API's
 
-- Presentation: https://gitpitch.com/jodiedunlop/talks/master?p=restful-apis
-- Source: https://github.com/jodiedunlop/talks/tree/master/restful-apis
-- Date: 19 Feb 2018
+_WIP_
+
