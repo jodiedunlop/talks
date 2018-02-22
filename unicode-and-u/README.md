@@ -1,6 +1,8 @@
-# Talk: Unicode and U
+# Talk: Unicode and Ü
 
 ## Overview
+
+Over 100 slides of unicode goodness ;)
 
 - The history of unicode
 - About encodings
